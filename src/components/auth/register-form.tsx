@@ -70,7 +70,7 @@ const RegisterForm = () => {
     <CardWrapper
       headerLabel='Create an Account'
       backButtonLabel="Already have an account?"
-      backButtonHref='/auth/login'
+      backButtonHref='/login'
       showSocial
     >
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-4 my-3'>

@@ -45,13 +45,13 @@ const LoginForm = () => {
 
     try {
       const session = await login(loginData)
+      
+      // dispatch({
+      //   type: "signIn",
+      //   payload: session
+      // })
 
-      dispatch({
-        type: "signIn",
-        payload: session
-      })
-
-      router.push("/dashboard")
+      // router.push("/dashboard")
     } 
     catch (error) {
       if (error instanceof Error) {
@@ -75,7 +75,7 @@ const LoginForm = () => {
     <CardWrapper
       headerLabel='Welcome back'
       backButtonLabel="Register with credentials"
-      backButtonHref='/auth/register'
+      backButtonHref='/register'
       showSocial
     >
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-4 my-3'>

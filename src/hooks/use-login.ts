@@ -9,7 +9,7 @@ export const useLogin = () => {
     try {
       const response = await fetch("http://192.168.100.165:3005/api/auth/local/login", {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },

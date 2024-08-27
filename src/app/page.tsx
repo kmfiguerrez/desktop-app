@@ -6,9 +6,8 @@ export default function Home() {
   useEffect(() => console.log(window.electronAPI.node()), [])
   return (
     <main>
-      Eletron app niggas
+      Welcome to using Next UI
       <br />
-      <a href="https://www.google.com">Hey google</a>
     </main>
   );
 }

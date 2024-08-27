@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import { NextUiProvider } from "@/providers/nextui-provider";
+import SessionProvider from "@/providers/session-provider";
 
 import "./globals.css";
 
@@ -22,7 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <NextUiProvider>
-          {children}
+          <SessionProvider>
+            {children}
+          </SessionProvider>
         </NextUiProvider>
       </body>
     </html>

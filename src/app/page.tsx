@@ -1,9 +1,14 @@
-import Image from "next/image";
+"use client"
+
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => console.log(window.electronAPI.node()), [])
   return (
     <main>
-      Eletron app
+      Eletron app niggas
+      <br />
+      <a href="https://www.google.com">Hey google</a>
     </main>
   );
 }

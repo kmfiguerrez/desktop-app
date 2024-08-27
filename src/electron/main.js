@@ -16,7 +16,10 @@ let mainWindow
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 800,
-    height: 600
+    height: 600,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js")
+    }
   })
 
   // For testing vanilla html.
@@ -40,6 +43,9 @@ const createWindow = () => {
   Some APIs can only be used after this event occurs.
 */
 app.whenReady().then(() => {
+  // See: https://www.electronjs.org/docs/latest/tutorial/tutorial-preload#communicating-between-processes
+  ipcMain.handle('ping', () => 'pong')
+
   createWindow()
 
   /*

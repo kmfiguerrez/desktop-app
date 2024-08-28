@@ -8,7 +8,9 @@ const serve = require("electron-serve");
   See: https://github.com/sindresorhus/electron-serve#readme
 */
 const appServe = app.isPackaged ? serve({
-  directory: path.join(__dirname, "../../out")
+  directory: path.join(__dirname, "../../out"),
+  scheme: "desktop-app",
+  hostname: "school-management"
 }) : null;
 
 let mainWindow

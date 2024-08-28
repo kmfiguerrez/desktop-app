@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 
 import { useSearchParams, useRouter } from 'next/navigation'
 
@@ -23,9 +23,77 @@ const LoginForm = () => {
   const [error, setError] = useState<string | null>(null)
 
   const router = useRouter()
-  const searchParams = useSearchParams()
   const { login } = useLogin()
   const { dispatch } = useSession()
+
+  // Why useSearchParams is used like this
+  // see: https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout
+  const Search = () => {
+    const searchParams = useSearchParams()
+
+    useEffect(() => {
+    
+      if (searchParams.get("errorCode") === "11000") {
+        // console.log("query params: ", searchParams.get("errorCode"))
+        // console.log("query params: ", searchParams.get("errorMessage"))
+        setError(searchParams.get("errorMessage")!)
+      }
+      
+      setError(searchParams.get("errorMessage")!)
+  
+    }, [searchParams])
+
+    return (
+      <CardWrapper
+        headerLabel='Welcome back'
+        backButtonLabel="Register with credentials"
+        backButtonHref='/register'
+        showSocial
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-4 my-3'>
+
+          {error && <FormError message={error} />}
+
+          <Controller 
+            name='email'
+            control={control}
+            render={({ field }) => (
+              <Input 
+                type="email" 
+                label="Email"
+                size='sm'
+                variant='bordered'
+                errorMessage={errors.email?.message}
+                isInvalid={!!errors.email}
+                {...field}
+              />              
+            )}
+          />
+
+          <Controller 
+            name='password'
+            control={control}
+            render={({ field }) => (
+              <Input 
+                type="password" 
+                label="Password"
+                size='sm'
+                variant='bordered'
+                errorMessage={errors.password?.message}
+                isInvalid={!!errors.password}
+                {...field}
+              />           
+            )}
+          />
+
+          <Button color='primary' variant='ghost' type='submit' radius='sm'>
+            Sign In
+          </Button>
+
+        </form>
+      </CardWrapper>
+    )    
+  }
 
   const {
     control,
@@ -60,66 +128,73 @@ const LoginForm = () => {
     }
   }
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    if (searchParams.get("errorCode") === "11000") {
-      // console.log("query params: ", searchParams.get("errorCode"))
-      // console.log("query params: ", searchParams.get("errorMessage"))
-      setError(searchParams.get("errorMessage")!)
-    }
+  //   if (searchParams.get("errorCode") === "11000") {
+  //     // console.log("query params: ", searchParams.get("errorCode"))
+  //     // console.log("query params: ", searchParams.get("errorMessage"))
+  //     setError(searchParams.get("errorMessage")!)
+  //   }
     
-    setError(searchParams.get("errorMessage")!)
+  //   setError(searchParams.get("errorMessage")!)
 
-  }, [searchParams])
+  // }, [searchParams])
+
+
   return (
-    <CardWrapper
-      headerLabel='Welcome back'
-      backButtonLabel="Register with credentials"
-      backButtonHref='/register'
-      showSocial
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-4 my-3'>
+    // <Suspense>
+    //   <CardWrapper
+    //     headerLabel='Welcome back'
+    //     backButtonLabel="Register with credentials"
+    //     backButtonHref='/register'
+    //     showSocial
+    //   >
+    //     <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-4 my-3'>
 
-        {error && <FormError message={error} />}
+    //       {error && <FormError message={error} />}
 
-        <Controller 
-          name='email'
-          control={control}
-          render={({ field }) => (
-            <Input 
-              type="email" 
-              label="Email"
-              size='sm'
-              variant='bordered'
-              errorMessage={errors.email?.message}
-              isInvalid={!!errors.email}
-              {...field}
-            />              
-          )}
-        />
+    //       <Controller 
+    //         name='email'
+    //         control={control}
+    //         render={({ field }) => (
+    //           <Input 
+    //             type="email" 
+    //             label="Email"
+    //             size='sm'
+    //             variant='bordered'
+    //             errorMessage={errors.email?.message}
+    //             isInvalid={!!errors.email}
+    //             {...field}
+    //           />              
+    //         )}
+    //       />
 
-        <Controller 
-          name='password'
-          control={control}
-          render={({ field }) => (
-            <Input 
-              type="password" 
-              label="Password"
-              size='sm'
-              variant='bordered'
-              errorMessage={errors.password?.message}
-              isInvalid={!!errors.password}
-              {...field}
-            />           
-          )}
-        />
+    //       <Controller 
+    //         name='password'
+    //         control={control}
+    //         render={({ field }) => (
+    //           <Input 
+    //             type="password" 
+    //             label="Password"
+    //             size='sm'
+    //             variant='bordered'
+    //             errorMessage={errors.password?.message}
+    //             isInvalid={!!errors.password}
+    //             {...field}
+    //           />           
+    //         )}
+    //       />
 
-        <Button color='primary' variant='ghost' type='submit' radius='sm'>
-          Sign In
-        </Button>
+    //       <Button color='primary' variant='ghost' type='submit' radius='sm'>
+    //         Sign In
+    //       </Button>
 
-      </form>
-    </CardWrapper>
+    //     </form>
+    //   </CardWrapper>
+    // </Suspense>
+    <Suspense>
+      <Search />
+    </Suspense>
   )
 }
 

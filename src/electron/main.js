@@ -8,7 +8,9 @@ const serve = require("electron-serve");
   See: https://github.com/sindresorhus/electron-serve#readme
 */
 const appServe = app.isPackaged ? serve({
-  directory: path.join(__dirname, "../../out")
+  directory: path.join(__dirname, "../../dist"),
+  scheme: "desktop-app",
+  hostname: "school-management"
 }) : null;
 
 let mainWindow
@@ -27,9 +29,9 @@ const createWindow = () => {
 
   if (app.isPackaged) {
     appServe(mainWindow)
-    .then(() => {
-      mainWindow.loadURL("app://-");
-    });
+    // .then(() => {
+    //   mainWindow.loadURL("app://-");
+    // });
   } 
   else {
     mainWindow.loadURL("http://localhost:3000");

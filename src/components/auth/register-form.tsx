@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import CardWrapper from '../card-wrapper'
 import FormError from './form-error';
+import FormSucess from './form-success';
 
 import { registerSchema, type TRegisterSchema } from '@/lib/zod-schema/register-schema';
 import type { TLoginSchema } from '@/lib/zod-schema/login-schema';
@@ -22,6 +23,7 @@ import { useSession } from '@/hooks/use-session';
 
 
 const RegisterForm = () => {
+  const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const { login } = useLogin()
@@ -41,21 +43,31 @@ const RegisterForm = () => {
     }
   })
 
-  const onSubmit: SubmitHandler<TRegisterSchema> = async (data) => {
+  const onSubmit: SubmitHandler<TRegisterSchema> = async (formData) => {
     // Reset runtime messages first.
     setError(null)
 
-    // Once registered successfuly, logs in the user also.
     try {
-      const loginData = await register(data)
-      const session = await login(loginData)
-
-      dispatch({
-        type: "signIn",
-        payload: session
+      const response = await fetch("http://192.168.100.165:3005/api/auth/local/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
       })
+  
+      if (!response.ok) {
+        const error = await response.json()
+        console.log("From register: ", error)
+        throw new Error(error.error)
+      }
+  
+      const data = await response.json()
+      console.log(success)
+      setSuccess(data.success)
 
-      router.push("/dashboard")
+
+      // router.push("/dashboard")
     } 
     catch (error) {
       console.log("register", error)
@@ -75,6 +87,7 @@ const RegisterForm = () => {
     >
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-y-4 my-3'>
 
+        {success && <FormSucess message={success} />}
         {error && <FormError message={error} />}
 
         <Controller 
@@ -120,31 +133,4 @@ const RegisterForm = () => {
 
 export default RegisterForm
 
-const register = async (formData: TRegisterSchema) => {
-  try {
-    const response = await fetch("http://192.168.100.165:3005/api/auth/local/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
-    })
 
-    if (!response.ok) {
-      const error = await response.json()
-      console.log("From register: ", error)
-      throw new Error(error.error)
-    }
-
-    // Expects { success: string }.
-    await response.json()
-
-    return { 
-      email: formData.email, 
-      password: formData.password 
-    } as TLoginSchema
-  } 
-  catch (error) {
-    throw error
-  }
-}

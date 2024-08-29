@@ -19,6 +19,7 @@ import type { TLoginSchema } from '@/lib/zod-schema/login-schema';
 
 import { useLogin } from '@/hooks/use-login';
 import { useSession } from '@/hooks/use-session';
+import { getErrorMessage } from '@/lib/error-message';
 
 
 
@@ -71,9 +72,8 @@ const RegisterForm = () => {
     } 
     catch (error) {
       console.log("register", error)
-      if (error instanceof Error) {
-        setError(error.message)
-      }
+      const errorMessage = getErrorMessage(error)
+      setError(errorMessage)
     }
   }
 

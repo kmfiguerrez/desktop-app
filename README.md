@@ -1,4 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# School Management App
+
+This project is a desktop app built with Electron.js and Next.js
+
+Notes: 
+
+- This app uses Nest.js as its Web API server.
+- This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
 
 ## Getting Started
 
@@ -16,21 +24,50 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Nest.js response data
 
-## Learn More
+This app uses Nest.js as its Web API server.
 
-To learn more about Next.js, take a look at the following resources:
+### Session response
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Nest sends session data in the form of:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```typescript
+type SessionResponseData = {
+  accessToken: string
+  tokenExpiration: Date
+  user: {
+    userId: number
+    name: string | null
+    email: string
+    image: string | null
+  }
+}
+```
 
-## Deploy on Vercel
+### Error response
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Nest sends standard HTTP exceptions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+JSON error content takes the form:
+
+```typescript
+type ErrorContent = {
+  message: string | Array<string>
+  error?: string
+  status: number
+}
+```
+
+where: 
+- The `message` property is a custom message or array of custom messages.
+- The `error` property takes the name of the built-in HTTP exceptions.
+- The `status` property takes the status code the of built-in HTTP exceptions.
+
+
+
+
+
+
+

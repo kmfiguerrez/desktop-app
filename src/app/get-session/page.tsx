@@ -10,7 +10,7 @@ import {Spinner} from "@nextui-org/spinner";
 
 
 /*
-  This page is only used to get the session data through oauth
+  This page is only used to get the session data when users used oauth
   because this app will be a static app for desktop.
 */
 const GetSessionData = () => {
@@ -41,7 +41,7 @@ const GetSessionData = () => {
         dispatch({
           type: "signIn", 
           payload: {
-            access_token: session.accessToken,
+            accessToken: session.accessToken,
             expires: session.tokenExpiration,
             data: {
               user: session.user

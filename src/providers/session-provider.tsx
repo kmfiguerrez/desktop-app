@@ -7,7 +7,7 @@ import React, { createContext, useReducer } from 'react'
  */
 export type TSession = {
   expires?: Date
-  access_token: string
+  accessToken: string
   data: {
     user: {
       id: string | null

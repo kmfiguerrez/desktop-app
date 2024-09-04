@@ -48,7 +48,13 @@ const LoginForm = () => {
       
       // dispatch({
       //   type: "signIn",
-      //   payload: session
+      //   payload: {
+      //     accessToken: session.accessToken,
+      //     expires: session.tokenExpiration,
+      //     data: {
+      //       user: session.user
+      //     }
+      //   }
       // })
 
       // router.push("/dashboard")

@@ -6,13 +6,15 @@ import React, { createContext, useReducer } from 'react'
  * I got this session props from auth.js
  */
 export type TSession = {
-  expires: Date
-  sessionToken: string
-  user: {
-    id: string
-    name: string
-    email: string
-    image: string
+  expires?: Date
+  access_token: string
+  data: {
+    user: {
+      id: string | null
+      name: string | null
+      email: string | null
+      image: string | null
+    }
   }
 }
 
@@ -54,7 +56,6 @@ type TSignOutAction = {
 type TSessionAction = TSignInAction | TSignOutAction
 
 const sessionReducer = (session: TSessionState, action: TSessionAction) => {
-  console.log("Inside reducer", session)
   switch (action.type) {
     case 'signIn': {
       return action.payload

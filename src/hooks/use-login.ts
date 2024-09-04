@@ -23,8 +23,10 @@ export const useLogin = () => {
       }
 
       // Expects session.
-      const session: TSession = await response.json()
-      return session
+      // const session: TSession = await response.json()
+      const token = await response.json()
+      console.log(token)
+      return token
     } 
     catch (error: unknown) {
       throw error

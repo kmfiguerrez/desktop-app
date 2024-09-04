@@ -13,7 +13,7 @@ const OauthLogin = () => {
         variant='flat'
         radius='sm'
         as={Link}
-        href="http://192.168.100.165:3005/api/oauth2/google"
+        href="http://192.168.100.165:3005/api/auth/google/login"
         className='w-full'
 
       >
@@ -21,7 +21,7 @@ const OauthLogin = () => {
         Sign In with Google
       </Button>
       <Button
-        href="http://192.168.100.165:3005/api/auth/discord"
+        href="http://192.168.100.165:3005/api/auth/discord/login"
         as={Link}
         variant='flat'
         radius='sm'

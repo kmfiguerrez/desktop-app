@@ -1,9 +1,10 @@
 "use client"
 
-import { useSession } from '@/hooks/use-session'
-import { useRouter } from 'next/navigation'
-
 import React, { useEffect } from 'react'
+
+import { useRouter, useSearchParams } from 'next/navigation'
+
+import { useSession } from '@/hooks/use-session'
 
 import {Spinner} from "@nextui-org/spinner";
 
@@ -15,12 +16,17 @@ import {Spinner} from "@nextui-org/spinner";
 const GetSessionData = () => {
   const { dispatch } = useSession()
   const router = useRouter()
+  const searchParams = useSearchParams()
+
   
   useEffect(() => {
-    const getSessionData = async () => {
+    const getSessionData = async (token: string) => {
       try {
         const response = await fetch("http://192.168.100.165:3005/api/auth/session", {
-          credentials: "include"
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
         })
 
         if (!response.ok) {
@@ -32,7 +38,16 @@ const GetSessionData = () => {
         const session = await response.json()
         console.log(session)
 
-        dispatch({type: "signIn", payload: session})
+        dispatch({
+          type: "signIn", 
+          payload: {
+            access_token: session.accessToken,
+            expires: session.tokenExpiration,
+            data: {
+              user: session.user
+            }
+          }
+        })
 
         router.push("/dashboard")
       } 
@@ -42,8 +57,12 @@ const GetSessionData = () => {
       }      
     }
 
-    getSessionData()
-  }, [dispatch, router])
+    const token = searchParams.get("token")
+    if (token) {
+      getSessionData(token)
+    }
+
+  }, [dispatch, router, searchParams])
 
   return (
     <div className='w-[500px] mx-auto'>

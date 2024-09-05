@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter()
 
-  useEffect(() => console.log(window.electronAPI.node()), [])
+  // useEffect(() => console.log(window.electronAPI.node()), [])
 
 
   return (

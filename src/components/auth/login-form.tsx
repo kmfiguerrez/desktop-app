@@ -68,14 +68,10 @@ const LoginForm = () => {
 
   useEffect(() => {
     
-    if (searchParams.get("errorCode") === "11000") {
-      // console.log("query params: ", searchParams.get("errorCode"))
-      // console.log("query params: ", searchParams.get("errorMessage"))
-      setError(searchParams.get("errorMessage")!)
+    if (searchParams.get("error")) {
+      setError(searchParams.get("message")!)
     }
     
-    setError(searchParams.get("errorMessage")!)
-
   }, [searchParams])
 
 

@@ -15,7 +15,6 @@ import { loginSchema, type TLoginSchema } from '@/lib/zod-schema/login-schema';
 import CardWrapper from '../card-wrapper'
 import FormError from './form-error';
 
-import { useLogin } from '@/hooks/use-login';
 import { useSession } from '@/hooks/use-session';
 
 
@@ -23,7 +22,6 @@ const LoginForm = () => {
   const [error, setError] = useState<string | null>(null)
 
   const router = useRouter()
-  const { login } = useLogin()
   const { dispatch } = useSession()
   const searchParams = useSearchParams()
 
@@ -44,7 +42,22 @@ const LoginForm = () => {
     setError(null)
 
     try {
-      const session = await login(loginData)
+      const response = await fetch("http://192.168.100.165:3005/api/auth/local/login", {
+        method: "POST",
+        // credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(loginData)
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        console.log(error)
+        throw new Error(error.message)      
+      }
+
+      const token = await response.json()
       
       // dispatch({
       //   type: "signIn",

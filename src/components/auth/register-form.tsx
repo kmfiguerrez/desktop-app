@@ -15,9 +15,7 @@ import FormError from './form-error';
 import FormSucess from './form-success';
 
 import { registerSchema, type TRegisterSchema } from '@/lib/zod-schema/register-schema';
-import type { TLoginSchema } from '@/lib/zod-schema/login-schema';
 
-import { useLogin } from '@/hooks/use-login';
 import { useSession } from '@/hooks/use-session';
 import { getErrorMessage } from '@/lib/error-message';
 
@@ -27,7 +25,6 @@ const RegisterForm = () => {
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const { login } = useLogin()
   const { dispatch } = useSession()
   const router = useRouter()
 

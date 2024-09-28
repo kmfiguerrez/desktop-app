@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 
 /**
  * I got this session props from auth.js
@@ -32,6 +32,15 @@ type TSessionState = TSession | null
 const initialState: TSessionState = null
 const SessionProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, dispatch] = useReducer(sessionReducer, initialState);
+
+
+  // useEffect(() => {
+  //   const interval = setInterval(async () => {
+  //     console.log("Refreshing token")
+  //   }, 5000)
+
+  //   return () => clearInterval(interval)
+  // })
 
   return (
     <SessionDataContext.Provider value={{ session, dispatch}}>

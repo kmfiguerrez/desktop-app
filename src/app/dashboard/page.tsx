@@ -1,8 +1,12 @@
 "use client"
 
-import { useSession } from '@/hooks/use-session'
-import { useRouter } from 'next/navigation'
 import React from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import { useSession } from '@/hooks/use-session'
+import UserAvatar from '@/components/dashboard/user-avatar'
+
 
 const DashboardPage = () => {
   const router = useRouter()
@@ -11,7 +15,8 @@ const DashboardPage = () => {
   console.log("session data: ", sessionData)
   return (
     <div>
-      DashboardPageNigga
+      <UserAvatar />
+      
       <button onClick={() => router.push("/login")}>
         Back to home nigga
       </button>

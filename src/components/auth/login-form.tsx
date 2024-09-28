@@ -44,7 +44,6 @@ const LoginForm = () => {
     try {
       const response = await fetch("http://192.168.100.165:3005/api/auth/local/login", {
         method: "POST",
-        // credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },
@@ -57,7 +56,7 @@ const LoginForm = () => {
         throw new Error(error.message)      
       }
 
-      const token = await response.json()
+      const session = await response.json()
       
       // dispatch({
       //   type: "signIn",
@@ -80,8 +79,14 @@ const LoginForm = () => {
   }
 
   useEffect(() => {
-    
-    if (searchParams.get("error")) {
+    const queryError = searchParams.get("error")
+    const queryErrorMessage = searchParams.get("message")
+
+    if (queryError) {
+      if (queryError === "TypeError") {
+        // throw new TypeError(queryErrorMessage!)
+      }
+
       setError(searchParams.get("message")!)
     }
     
